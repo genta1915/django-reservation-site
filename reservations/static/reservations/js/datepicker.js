@@ -5,18 +5,54 @@ document.addEventListener("DOMContentLoaded", async function () {
   const form = document.getElementById("filterForm");
   const showBtn = document.getElementById("showBtn");
 
+
   if (form) {
       form.addEventListener("submit", function (e) {
           e.preventDefault();
       });
   }
 
+  async function showLoadingAndLoadSlots() {
+    if (!input.value) return;
+
+    const loading = document.getElementById("page-loading");
+
+    if (loading) {
+      loading.style.display = "flex";
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 50));
+    await loadSlots(input.value);
+
+    if (loading) {
+      loading.style.display = "none";
+    }
+  }
+
+  input.addEventListener("change", async function () {
+    await showLoadingAndLoadSlots();
+  });
+
   if (showBtn) {
-      showBtn.addEventListener("click", function () {
-          if (input.value) {
-              loadSlots(input.value);
-          }
-      });
+    showBtn.addEventListener("click", async function () {
+      await showLoadingAndLoadSlots();
+
+      if (input.value) {
+        const loading = document.getElementById("page-loading");
+        console.log("loading:", loading);
+
+        if (loading) {
+          loading.style.display = "flex";
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 50));
+        await loadSlots(input.value);
+
+        if (loading) {
+          loading.style.display = "none";
+        }
+      }
+    });
   }
 
   // Django json_script から dateStatus を取得

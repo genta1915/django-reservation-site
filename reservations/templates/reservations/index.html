@@ -28,6 +28,11 @@
 
 <body class="bg-light">
 
+  <!-- ローディング画面 -->
+  <div id="page-loading">
+    <div class="loading-spinner"></div>
+  </div>
+
   <main class="container py-4">
     <!-- 全体を中央寄せにする幅（2枚目みたいに） -->
     <div class="mx-auto" style="max-width: 980px;">
@@ -103,6 +108,14 @@
 
   <!-- 自作JS -->
   <script defer src="{% static 'reservations/js/datepicker.js' %}"></script>
+
+  <script>
+  window.addEventListener("load", function() {
+    setTimeout(function(){
+      document.getElementById("loading").style.display = "none";
+    }, 2000);
+  });
+  </script>
 
 </body>
 </html>
