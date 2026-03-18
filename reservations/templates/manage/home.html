@@ -13,6 +13,9 @@
     <li><a href="#">予約枠（Slots）一覧（次に作る）</a></li>
   </ul>
 
-  <p><a href="/accounts/logout/">ログアウト</a></p>
+  <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">ログアウト</button>
+  </form>
 </body>
 </html>
