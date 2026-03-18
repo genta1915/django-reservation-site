@@ -17,8 +17,6 @@
   <link rel="stylesheet" href="{% static 'reservations/css/base.css' %}">
   <link rel="stylesheet" href="{% static 'reservations/css/layout.css' %}">
   <link rel="stylesheet" href="{% static 'reservations/css/booking.css' %}">
-  <link rel="stylesheet" href="{% static 'reservations/css/admin.css' %}">
-
   <!-- flatpickr (CDN) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -80,6 +78,26 @@
             <a href="{% url 'reservations:index' %}" class="btn btn-outline-secondary w-100">リセット</a>
           </div>
         </form>
+
+        <div class="calendar-legend">
+          <span class="legend-item">
+            <span class="legend-dot legend-selected"></span>
+            選択中
+          </span>
+          <span class="legend-item">
+            <span class="legend-dot legend-open"></span>
+            空き
+          </span>
+          <span class="legend-item">
+            <span class="legend-dot legend-partial"></span>
+            一部空き
+          </span>
+          <span class="legend-item">
+            <span class="legend-dot legend-full"></span>
+            満席
+          </span>
+        </div>
+
       </section>
 
       <!-- Python(Django) -> JS に渡す配列（超重要） -->

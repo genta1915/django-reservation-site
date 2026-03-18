@@ -258,3 +258,42 @@
 .flatpickr-day.today{
     border:2px solid #555 !important;
 }
+
+/* ===== カレンダー凡例 ===== */
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #555;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 2px solid;
+  background-color: transparent;
+}
+
+.legend-selected { border-color: #4a90e2; }
+.legend-open { border-color: #8bc34a; }
+.legend-partial { border-color: #f4c542; }
+.legend-full { border-color: #e57373; }
+
+.calendar-legend {
+  gap: 16px 24px;
+}
+
+.calendar-legend {
+  color: #333;
+}
