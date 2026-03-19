@@ -17,6 +17,8 @@ from django.db.models import Case, When, IntegerField
 
 @login_required
 def manage_home(request):
+    if not request.user.is_staff:
+        return redirect('/')
     return render(request, "manage/home.html")
 
 def index(request):
