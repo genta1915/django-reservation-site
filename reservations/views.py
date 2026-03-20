@@ -21,6 +21,29 @@ def manage_home(request):
         return redirect('/')
     return render(request, "manage/home.html")
 
+@login_required
+def reservation_list(request):
+    if not request.user.is_staff:
+        return redirect('/')
+
+    reservations = Reservation.objects.select_related('slot').all().order_by('-id')
+
+    return render(request, 'manage/reservation_list.html', {
+        'reservations': reservations
+    })
+
+@login_required
+def delete_reservation(request, pk):
+    if not request.user.is_staff:
+        return redirect('/')
+
+    reservation = get_object_or_404(Reservation, pk=pk)
+
+    if request.method == "POST":
+        reservation.delete()
+
+    return redirect('reservations:reservation_list')
+
 def index(request):
     # ?date=YYYY-MM-DD を受け取る
     qdate_str = request.GET.get("date")
