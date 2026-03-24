@@ -1,7 +1,8 @@
 # 予約サイト（Django）
 
 ## 概要
-予約枠（Slot）を管理画面から作成し、ユーザー画面で一覧表示・予約ができるミニ予約サイトです。
+- 管理画面から予約枠を作成し、ユーザー画面で一覧表示・予約ができるミニ予約サイトです。<br>
+- Djangoを使用してDB連携と二重予約防止を実装しています。
 
 ## 主な機能
 - 予約枠一覧表示（DB連携）
@@ -13,11 +14,20 @@
 - Python / Django
 - SQLite（開発用）
 - HTML / CSS
+- Bootstrap
+- JavaScript
+- Git / GitHub
 
 ## 画面
-- `/` 予約枠一覧
-- `/thanks/ 予約完了`
-- `/admin/ 管理画面`
+
+### 予約画面
+<img src="images/reservation.png" width="700">
+
+### 管理画面
+<img src="images/admin.png" width="700">
+
+### 削除確認
+<img src="images/delete_confirm.png" width="700">
 
 ## セットアップ
 ```bash
