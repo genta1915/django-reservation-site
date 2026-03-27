@@ -31,6 +31,7 @@
 
 ## ディレクトリ構成
 
+'''text
 reservation_site/
 ├ images/              # README用スクリーンショット
 ├ reservation_site/    # Django設定
