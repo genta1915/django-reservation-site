@@ -58,6 +58,7 @@ reservation_site/
 │  └ views.py
 ├ manage.py
 └ README.md
+'''
 
 ## 画面
 
