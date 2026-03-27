@@ -29,6 +29,35 @@
 - JavaScript
 - Git / GitHub
 
+## ディレクトリ構成
+
+reservation_site/
+├ images/              # README用スクリーンショット
+├ reservation_site/    # Django設定
+│  ├ __init__.py
+│  ├ asgi.py
+│  ├ settings.py
+│  ├ urls.py
+│  └ wsgi.py
+├ reservations/        # 予約アプリ
+│  ├ migrations/
+│  ├ static/reservations/
+│  │  ├ css/
+│  │  └ js/
+│  ├ templates/
+│  │  ├ manage/
+│  │  ├ registration/
+│  │  └ reservations/
+│  ├ __init__.py
+│  ├ admin.py
+│  ├ apps.py
+│  ├ models.py
+│  ├ tests.py
+│  ├ urls.py
+│  └ views.py
+├ manage.py
+└ README.md
+
 ## 画面
 
 ### 予約画面
