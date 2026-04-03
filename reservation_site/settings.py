@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-f$6f^#rmj8ytoqe+v@39wh5usrkf&9&z7)hoq(5!20g!a13!x+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "onrender.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", ".onrender.com"]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.onrender.com",
@@ -123,6 +123,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
