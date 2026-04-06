@@ -1,0 +1,299 @@
+/* booking.css：予約枠一覧ページ用 */
+
+.filter-area{
+  padding: 14px 16px;
+  margin-top: 14px;
+}
+
+.filter-area label{
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.filter-area .form-control,
+.filter-area .form-select{
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.10);
+  padding: 10px 12px;
+}
+
+/* ボタン：表示（青）とリセット（薄グレー）を整える */
+.btn-wrap{
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* 予約枠の1行（カードっぽい行） */
+.slot-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 14px 16px;
+  margin-top: 12px;
+
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: var(--radius);
+  box-shadow: 0 3px 10px rgba(0,0,0,.04);
+}
+
+.slot-left{
+  display: grid;
+  gap: 2px;
+}
+
+.slot-datetime{
+  font-weight: 800;
+  letter-spacing: .01em;
+}
+
+.slot-meta{
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* 予約ボタン：白文字＋黄緑枠（前に言ってたやつ） */
+.btn-book{
+  border-radius: 999px;
+  padding: 10px 22px;
+  font-weight: 800;
+
+  border: 2px solid var(--green-500);
+  background: var(--green-100);
+  color: #1b3a1b;
+}
+
+.btn-book:hover{
+  background: var(--green-200);
+  color: #122a12;
+}
+
+/* 無効状態 */
+.btn-book:disabled,
+.btn-book.disabled{
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+/* スマホで崩れないように */
+@media (max-width: 600px){
+  .slot-row{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn-wrap{
+    justify-content: stretch;
+  }
+}
+
+/* 説明文の左に縦ライン */
+.description-box {
+  border-left: 5px solid #6fbf73;
+  padding-left: 15px;
+  line-height: 1.8;
+  color: #444;
+}
+
+/* 管理画面説明の左ライン */
+.description-line {
+  border-left: 4px solid #97d19a;
+  padding-left: 15px;
+  line-height: 1.8;
+}
+
+/* 通常時 */
+.btn.reserve-btn {
+  background-color: #f7f7f7 !important;
+  border: 2px solid #8abf85 !important;
+  color: #78c382 !important;
+  font-weight: 700;
+  transition: 0.2s ease;
+}
+
+/* ホバー時（触れたとき） */
+.btn.reserve-btn:hover {
+  background-color: #61ca73 !important;  /* 黄緑 */
+  border-color: #7ce27f !important;
+  color: white !important;
+}
+
+.flatpickr-day.today {
+  border: 2px solid #78c382;
+  border-radius: 50%;
+}
+
+.flatpickr-day[aria-label*="Sunday"] {
+  color: #e74c3c !important;
+}
+
+.flatpickr-day[aria-label*="Saturday"] {
+  color: #3498db !important;
+}
+
+.flatpickr-day.is-sun { color: #e74c3c !important; }
+.flatpickr-day.is-sat { color: #3498db !important; }
+
+/* ===== 曜日ヘッダー ===== */
+
+/* 日曜日 */
+.flatpickr-weekday:nth-child(1) {
+  color: #e74c3c !important;
+}
+
+/* 土曜日 */
+.flatpickr-weekday:nth-child(7) {
+  color: #3498db !important;
+}
+
+
+/* ===== 日付 ===== */
+
+/* 日曜 */
+.flatpickr-day.is-sun {
+  color: #e74c3c !important;
+}
+
+/* 土曜 */
+.flatpickr-day.is-sat {
+  color: #3498db !important;
+}
+
+/* 祝日 = 赤 */
+.flatpickr-day.is-holiday {
+  color: #e74c3c !important;
+}
+
+/* 日曜（文字だけ薄赤） */
+.flatpickr-day.sunday {
+  color: #da3333 !important;
+}
+
+/* ===== 曜日（文字色のみ） ===== */
+
+/* 日曜 */
+.flatpickr-day.sunday {
+  color: #d32f2f !important;
+}
+
+/* 土曜 */
+.flatpickr-day.saturday {
+  color: #1976d2 !important;
+}
+
+/* ===== 予約状態の日は文字を白にする ===== */
+.flatpickr-day.is-available,
+.flatpickr-day.is-full,
+.flatpickr-day.is-mixed {
+  color: #ffffff !important;
+}
+
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* カレンダー丸表示 */
+
+.flatpickr-day.is-available{
+    border:2px solid #4CAF50;
+    background:transparent;
+    color:#4CAF50;
+}
+
+.flatpickr-day.is-mixed{
+    border:2px solid #FFC107;
+    background:transparent;
+    color:#FFC107;
+}
+
+.flatpickr-day.is-full{
+    border:2px solid #F44336;
+    background:transparent;
+    color:#F44336;
+}
+
+/* 選択中 */
+
+.flatpickr-day.selected{
+    border:2px solid #2196F3;
+    background:transparent;
+    color:#2196F3;
+}
+
+/* 空き */
+.flatpickr-day.is-available{
+    border:2px solid #4CAF50 !important;
+    background:transparent !important;
+    color:#4CAF50 !important;
+}
+
+/* 一部空き */
+.flatpickr-day.is-mixed{
+    border:2px solid #FFC107 !important;
+    background:transparent !important;
+    color:#FFC107 !important;
+}
+
+/* 満席 */
+.flatpickr-day.is-full{
+    border:2px solid #F44336 !important;
+    background:transparent !important;
+    color:#F44336 !important;
+}
+
+/* 選択中 */
+.flatpickr-day.selected{
+    border:2px solid #2196F3 !important;
+    background:transparent !important;
+    color:#2196F3 !important;
+}
+
+/* 今日 */
+.flatpickr-day.today{
+    border:2px solid #555 !important;
+}
+
+/* ===== カレンダー凡例 ===== */
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #555;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 2px solid;
+  background-color: transparent;
+}
+
+.legend-selected { border-color: #4a90e2; }
+.legend-open { border-color: #8bc34a; }
+.legend-partial { border-color: #f4c542; }
+.legend-full { border-color: #e57373; }
+
+.calendar-legend {
+  gap: 16px 24px;
+}
+
+.calendar-legend {
+  color: #333;
+}
