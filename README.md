@@ -7,8 +7,9 @@ https://django-reservation-site.onrender.com
 https://github.com/genta1915/django-reservation-site
 
 ## 概要
-- 管理画面から予約枠を作成し、ユーザー画面で一覧表示・予約ができるミニ予約サイトです。<br>
-- Djangoを使用してDB連携と二重予約防止を実装しています。
+-Djangoの学習として作成した予約サイトです。
+- 管理画面から予約枠を作成し、ユーザーが予約できる仕組みを実装しています。
+- 実際のWebサービスを想定し、・二重予約防止・満席制御・非同期更新(AJAX)などを実装しました。
 - Renderを使用してWeb上にデプロイしています。
 
 ## 主な機能
@@ -33,6 +34,7 @@ https://github.com/genta1915/django-reservation-site
 - Django 'transaction.atomic'を使った二重予約防止
 - 'select_for_update'による排他制御
 - Bootstrapを使ったUI構築
+- 満席時は予約不可にするロジックを実装
 - AJAXを使用してページ遷移なしで予約枠を更新
 
 ## 使用技術
