@@ -1,14 +1,27 @@
 # 予約サイト（Django）
 
+## 公開URL
+https://django-reservation-site.onrender.com
+
+## GitHub
+https://github.com/genta1915/django-reservation-site
+
 ## 概要
 - 管理画面から予約枠を作成し、ユーザー画面で一覧表示・予約ができるミニ予約サイトです。<br>
 - Djangoを使用してDB連携と二重予約防止を実装しています。
+- Renderを使用してWeb上にデプロイしています。
 
 ## 主な機能
 - 予約枠一覧表示（DB連携）
 - 満席制御（残り0は予約不可）
 - 予約処理（POST）
 - 二重予約防止（transaction.atomic + select_for_update）
+- 日付選択で予約枠の表示切り替え
+- 予約登録
+- 予約キャンセル
+- 管理者による予約枠作成
+- 祝日表示
+- 土日色分け表示
 
 ## 予約の流れ
 1. 日付を選択
@@ -20,6 +33,7 @@
 - Django 'transaction.atomic'を使った二重予約防止
 - 'select_for_update'による排他制御
 - Bootstrapを使ったUI構築
+- AJAXを使用してページ遷移なしで予約枠を更新
 
 ## 使用技術
 - Python / Django
@@ -28,6 +42,7 @@
 - Bootstrap
 - JavaScript
 - Git / GitHub
+- Render (デプロイ)
 
 ## ディレクトリ構成
 
