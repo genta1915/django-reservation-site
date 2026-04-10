@@ -12,6 +12,15 @@ https://github.com/genta1915/django-reservation-site
 - 実際のWebサービスを想定し、・二重予約防止・満席制御・非同期更新(AJAX)などを実装しました。
 - Renderを使用してWeb上にデプロイしています。
 
+## 使用技術
+- Python / Django
+- SQLite（開発用）
+- HTML / CSS
+- Bootstrap
+- JavaScript
+- Git / GitHub
+- Render (デプロイ)
+
 ## 主な機能
 - 予約枠一覧表示（DB連携）
 - 満席制御（残り0は予約不可）
@@ -37,14 +46,9 @@ https://github.com/genta1915/django-reservation-site
 - 満席時は予約不可にするロジックを実装
 - AJAXを使用してページ遷移なしで予約枠を更新
 
-## 使用技術
-- Python / Django
-- SQLite（開発用）
-- HTML / CSS
-- Bootstrap
-- JavaScript
-- Git / GitHub
-- Render (デプロイ)
+## 開発背景
+- Djangoの学習として、実際のWebサービスを想定した予約システムを開発しました。
+- 満席制御や二重予約防止など、実運用を意識した機能を実装しています。
 
 ## ディレクトリ構成
 
@@ -80,12 +84,15 @@ reservation_site/
 ## 画面
 
 ### 予約画面
+- ユーザーが日付を選択し、予約枠を確認して予約できます。
 <img src="images/reservation.png" width="700">
 
 ### 管理画面
+- 管理者が予約枠を作成・管理できます。
 <img src="images/admin.png" width="700">
 
 ### 削除確認
+- 管理者が予約枠を削除する際に、削除確認がでます。
 <img src="images/delete_confirm.png" width="700">
 
 ## セットアップ
