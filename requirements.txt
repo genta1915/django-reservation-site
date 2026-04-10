@@ -3,4 +3,4 @@ Django==5.1.2
 gunicorn==25.3.0
 packaging==26.0
 sqlparse==0.5.3
-whitenoise
+whitenoise==6.12.0

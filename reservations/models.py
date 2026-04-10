@@ -15,7 +15,9 @@ class Slot(models.Model):
         ordering = ["date", "time"]
 
     def __str__(self):
-        return f"{self.date} {self.time.strftime('%H:%M')} (cap:{self.capacity})"
+        date = self.date if self.date else "no-date"
+        time = self.time.strftime("%H:%M") if self.time else "no-time"
+        return f"{date} {time} (cap:{self.capacity})"
 
     @property
     def reserved_count(self):
