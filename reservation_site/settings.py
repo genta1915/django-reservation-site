@@ -34,7 +34,7 @@ ALLOWED_HOSTS = ["127.0.0.1",
                    "django-reservation_site.onrender.com"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.onrender.com",
+    "https://django-reservation-site.onrender.com",
     ]
 
 
