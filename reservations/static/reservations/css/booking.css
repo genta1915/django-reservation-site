@@ -298,22 +298,17 @@
   color: #333;
 }
 
-/* 選択中の日付を青丸にする */
+/* 選択中の日付だけ青丸 */
 .flatpickr-calendar .flatpickr-day.selected,
-.flatpickr-calendar .flatpickr-day.selected:hover,
-.flatpickr-calendar .flatpickr-day.today.selected {
+.flatpickr-calendar .flatpickr-day.selected:hover {
     border: 2px solid #0d6efd !important;
     background: transparent !important;
     color: #0d6efd !important;
     box-shadow: none !important;
 }
 
-/* 今日・選択中の日付を青丸にする */
-.flatpickr-calendar .flatpickr-day.today,
-.flatpickr-calendar .flatpickr-day.selected,
-.flatpickr-calendar .flatpickr-day.today.selected {
-    border: 2px solid #0d6efd !important;
-    background: transparent !important;
-    color: #0d6efd !important;
-    box-shadow: none !important;
+/* 今日は黒丸に戻す */
+.flatpickr-calendar .flatpickr-day.today:not(.selected) {
+    border-color: #333 !important;
+    color: #333 !important;
 }
