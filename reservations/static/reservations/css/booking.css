@@ -312,3 +312,7 @@
     border-color: #333 !important;
     color: #333 !important;
 }
+
+.legend-today {
+    border-color: #333;
+}
