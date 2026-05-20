@@ -14,6 +14,7 @@ https://github.com/genta1915/django-reservation-site
 
 ## 使用技術
 - Python / Django
+- PostgreSQL(本番環境)
 - SQLite（開発用）
 - HTML / CSS
 - Bootstrap
