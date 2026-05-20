@@ -214,7 +214,22 @@ def cansel_reservation(request,reservation_id):
 def slots_partial(request):
     qdate = parse_date(request.GET.get("date") or "")
 
-    qs = Slot.objects.all().order_by("date", "time")
+    qs = (
+        Slot.objects.all()
+        .annotate(
+            reserved=Coalesce(
+                Sum(
+                    "reservations__people",
+                    filter=models.Q(
+                        reservations__status=Reservation.Status.ACTIVE
+                    ),
+                ),
+                0,
+            ),
+            remaining_db=F("capacity") - F("reserved"),
+        )
+        .order_by("date", "time")
+    )
 
     if qdate:
         qs = qs.filter(date=qdate)
