@@ -91,7 +91,7 @@ reservation_site/
 
 ### 予約画面
 - ユーザーが日付を選択し、予約枠を確認して予約できます。
-<img src="images/reservation.png" width="700">
+<img src="images/top-page.png" width="700">
 
 ### 管理画面
 - 管理者が予約枠を作成・管理できます。
