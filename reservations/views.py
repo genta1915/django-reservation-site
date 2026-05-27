@@ -1,19 +1,17 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.http import HttpResponseNotAllowed
-from django.db import transaction
-from django.utils.dateparse import parse_date
-from .models import Slot,Reservation
-from django.shortcuts import render, redirect, get_object_or_404
-from django.utils import timezone
-from django.contrib import messages
-from django.shortcuts import render
-from django.db import models
-from django.db.models import Sum, F, Value
-from django.db.models.functions import Coalesce
 from collections import defaultdict
 import json
-from django.db.models import Case, When, IntegerField
+
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db import models, transaction
+from django.db.models import Sum, F, Value, Case, When, IntegerField
+from django.db.models.functions import Coalesce
+from django.http import HttpResponseNotAllowed
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+from django.utils.dateparse import parse_date
+
+from .models import Slot, Reservation
 
 def get_slots_with_remaining():
     return (
