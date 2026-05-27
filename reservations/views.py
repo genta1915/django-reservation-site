@@ -15,6 +15,24 @@ from collections import defaultdict
 import json
 from django.db.models import Case, When, IntegerField
 
+def get_slots_with_remaining():
+    return (
+        Slot.objects.all()
+        .annotate(
+            reserved=Coalesce(
+                Sum(
+                    "reservations__people",
+                    filter=models.Q(
+                        reservations__status=Reservation.Status.ACTIVE
+                    ),
+                ),
+                0,
+            ),
+            remaining_db=F("capacity") - F("reserved"),
+        )
+        .order_by("date", "time")
+    )
+
 @login_required
 def manage_home(request):
     if not request.user.is_staff:
@@ -214,22 +232,7 @@ def cansel_reservation(request,reservation_id):
 def slots_partial(request):
     qdate = parse_date(request.GET.get("date") or "")
 
-    qs = (
-        Slot.objects.all()
-        .annotate(
-            reserved=Coalesce(
-                Sum(
-                    "reservations__people",
-                    filter=models.Q(
-                        reservations__status=Reservation.Status.ACTIVE
-                    ),
-                ),
-                0,
-            ),
-            remaining_db=F("capacity") - F("reserved"),
-        )
-        .order_by("date", "time")
-    )
+    qs = get_slots_with_remaining()
 
     if qdate:
         qs = qs.filter(date=qdate)
