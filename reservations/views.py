@@ -166,6 +166,17 @@ def index(request):
         "date_status_json": date_status_json,
     })
 
+def create_reservation(slot, people, request):
+    name = request.POST.get("name", "")
+    phone = request.POST.get("phone", "")
+
+    return Reservation.objects.create(
+        slot=slot,
+        name=name,
+        phone=phone,
+        people=people,
+        status=Reservation.Status.ACTIVE,
+    )
 
 @transaction.atomic
 def reserve(request, slot_id):
@@ -189,17 +200,7 @@ def reserve(request, slot_id):
         # messages.error(request, "過去の日付は予約できません")
         return redirect("reservations:index")
 
-    # 予約レコードを作る (name/phoneは今フォームがなければ空でOK)
-    name = request.POST.get("name","")
-    phone = request.POST.get("phone","")
-
-    reservation = Reservation.objects.create(
-        slot=slot,
-        name=name,
-        phone=phone,
-        people=people,
-        status=Reservation.Status.ACTIVE,
-    )
+    reservation = create_reservation(slot, people, request)
 
     # thanks画面でキャンセルできるようにID保存(最短実装)
     request.session["last_reservation_id"] = reservation.id
