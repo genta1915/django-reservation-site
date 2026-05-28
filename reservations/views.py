@@ -31,6 +31,30 @@ def get_slots_with_remaining():
         .order_by("date", "time")
     )
 
+def build_date_status(all_slots):
+    date_counts = defaultdict(lambda: {"available": 0, "full": 0})
+
+    for s in all_slots:
+        remaining = s.capacity - s.reserved
+        key = s.date.strftime("%Y-%m-%d")
+
+        if remaining > 0:
+            date_counts[key]["available"] += 1
+        else:
+            date_counts[key]["full"] += 1
+
+    final_status = {}
+
+    for d, counts in date_counts.items():
+        if counts["available"] > 0 and counts["full"] > 0:
+            final_status[d] = "mixed"
+        elif counts["available"] > 0:
+            final_status[d] = "available"
+        else:
+            final_status[d] = "full"
+
+    return final_status
+
 @login_required
 def manage_home(request):
     if not request.user.is_staff:
@@ -131,27 +155,7 @@ def index(request):
         )
     )
 
-    date_counts = defaultdict(lambda: {"available": 0, "full": 0})
-
-    for s in all_slots:
-        remaining = s.capacity - s.reserved
-        key = s.date.strftime("%Y-%m-%d")
-
-        if remaining > 0:
-            date_counts[key]["available"] += 1
-        else:
-            date_counts[key]["full"] += 1
-
-    # mixed判定
-    final_status = {}
-
-    for d, counts in date_counts.items():
-        if counts["available"] > 0 and counts["full"] > 0:
-            final_status[d] = "mixed"
-        elif counts["available"] > 0:
-            final_status[d] = "available"
-        else:
-            final_status[d] = "full"
+    final_status = build_date_status(all_slots)
 
     date_status_json = json.dumps(final_status)
 
