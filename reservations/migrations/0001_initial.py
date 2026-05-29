@@ -9,35 +9,64 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Slot',
+            name="Slot",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField()),
-                ('time', models.TimeField()),
-                ('capacity', models.PositiveIntegerField(default=1)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date", models.DateField()),
+                ("time", models.TimeField()),
+                ("capacity", models.PositiveIntegerField(default=1)),
             ],
             options={
-                'ordering': ['date', 'time'],
-                'unique_together': {('date', 'time')},
+                "ordering": ["date", "time"],
+                "unique_together": {("date", "time")},
             },
         ),
         migrations.CreateModel(
-            name='Reservation',
+            name="Reservation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('phone', models.CharField(max_length=20)),
-                ('status', models.CharField(choices=[('active', '予約中'), ('canceled', 'キャンセル')], default='active', max_length=10)),
-                ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('slot', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reservations', to='reservations.slot')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("phone", models.CharField(max_length=20)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[("active", "予約中"), ("canceled", "キャンセル")],
+                        default="active",
+                        max_length=10,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "slot",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="reservations",
+                        to="reservations.slot",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-created_at'],
+                "ordering": ["-created_at"],
             },
         ),
     ]

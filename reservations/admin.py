@@ -3,5 +3,3 @@ from .models import Slot, Reservation
 
 admin.site.register(Slot)
 admin.site.register(Reservation)
-
-
