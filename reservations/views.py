@@ -1,4 +1,3 @@
-from collections import defaultdict
 import json
 
 from django.contrib.auth.decorators import login_required
@@ -10,248 +9,26 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 
+
 from .models import Slot, Reservation
 
+from .view_modules.utils import (
+    build_date_status,
+    create_reservation,
+    get_slots_with_remaining,
+)
 
-def get_slots_with_remaining():
-    return (
-        Slot.objects.all()
-        .annotate(
-            reserved=Coalesce(
-                Sum(
-                    "reservations__people",
-                    filter=models.Q(reservations__status=Reservation.Status.ACTIVE),
-                ),
-                0,
-            ),
-            remaining_db=F("capacity") - F("reserved"),
-        )
-        .order_by("date", "time")
-    )
+from .view_modules.admin_views import (
+    delete_reservation,
+    edit_reservation,
+    manage_home,
+    reservation_list,
+)
 
-
-def build_date_status(all_slots):
-    date_counts = defaultdict(lambda: {"available": 0, "full": 0})
-
-    for s in all_slots:
-        remaining = s.capacity - s.reserved
-        key = s.date.strftime("%Y-%m-%d")
-
-        if remaining > 0:
-            date_counts[key]["available"] += 1
-        else:
-            date_counts[key]["full"] += 1
-
-    final_status = {}
-
-    for d, counts in date_counts.items():
-        if counts["available"] > 0 and counts["full"] > 0:
-            final_status[d] = "mixed"
-        elif counts["available"] > 0:
-            final_status[d] = "available"
-        else:
-            final_status[d] = "full"
-
-    return final_status
-
-
-@login_required
-def manage_home(request):
-    if not request.user.is_staff:
-        return redirect("/")
-    return render(request, "manage/home.html")
-
-
-@login_required
-def reservation_list(request):
-    if not request.user.is_staff:
-        return redirect("/")
-
-    reservations = Reservation.objects.select_related("slot").all().order_by("-id")
-
-    return render(
-        request, "manage/reservation_list.html", {"reservations": reservations}
-    )
-
-
-@login_required
-def delete_reservation(request, pk):
-    if not request.user.is_staff:
-        return redirect("/")
-
-    reservation = get_object_or_404(Reservation, pk=pk)
-
-    if request.method == "POST":
-        reservation.delete()
-
-    return redirect("reservations:reservation_list")
-
-
-@login_required
-def edit_reservation(request, pk):
-    if not request.user.is_staff:
-        return redirect("/")
-
-    reservation = get_object_or_404(Reservation, pk=pk)
-
-    if request.method == "POST":
-        reservation.name = request.POST.get("name")
-        reservation.people = request.POST.get("people")
-        reservation.phone = request.POST.get("phone")
-        reservation.save()
-        return redirect("reservations:reservation_list")
-
-    return render(request, "manage/edit_reservation.html", {"reservation": reservation})
-
-
-def index(request):
-    # ?date=YYYY-MM-DD を受け取る
-    qdate_str = request.GET.get("date")
-    qdate = parse_date(qdate_str) if qdate_str else None
-
-    today = timezone.localdate()
-
-    slots = (
-        Slot.objects.filter(date__gte=today)
-        .annotate(
-            reserved=Coalesce(
-                Sum(
-                    "reservations__people",
-                    filter=models.Q(reservations__status=Reservation.Status.ACTIVE),
-                ),
-                0,
-            ),
-            remaining_db=F("capacity") - F("reserved"),
-        )
-        .order_by("date", "time")
-    )
-
-    now = timezone.localtime().time()
-    slots = slots.exclude(date=today, time__lt=now)
-
-    if qdate:
-        if qdate < today:
-            qdate = None  # 過去日なら無効化(一覧出さない)
-        else:
-            slots = slots.filter(date=qdate)
-
-    # flatpickr の enable 用（"YYYY-MM-DD" の配列）
-    available_dates = (
-        Slot.objects.filter(date__gte=today)
-        .order_by("date")
-        .values_list("date", flat=True)
-        .distinct()
-    )
-    available_dates = [d.strftime("%Y-%m-%d") for d in available_dates]
-
-    all_slots = Slot.objects.filter(date__gte=today).annotate(
-        reserved=Coalesce(
-            Sum(
-                "reservations__people",
-                filter=models.Q(reservations__status=Reservation.Status.ACTIVE),
-            ),
-            0,
-        )
-    )
-
-    final_status = build_date_status(all_slots)
-
-    date_status_json = json.dumps(final_status)
-
-    return render(
-        request,
-        "reservations/index.html",
-        {
-            "slots": slots,
-            "qdate": qdate,
-            "available_dates": available_dates,
-            "date_status_json": date_status_json,
-        },
-    )
-
-
-def create_reservation(slot, people, request):
-    name = request.POST.get("name", "")
-    phone = request.POST.get("phone", "")
-
-    return Reservation.objects.create(
-        slot=slot,
-        name=name,
-        phone=phone,
-        people=people,
-        status=Reservation.Status.ACTIVE,
-    )
-
-
-@transaction.atomic
-def reserve(request, slot_id):
-    if request.method != "POST":
-        return HttpResponseNotAllowed(["POST"])
-
-    slot = Slot.objects.select_for_update().get(id=slot_id)
-    people = int(request.POST.get("people", 1))
-
-    # 1未満はNG
-    if people < 1:
-        return redirect("reservations:index")
-
-    # 残席より多い人数はNG
-    if slot.remaining < people:
-        return redirect("reservations:index")
-
-    today = timezone.localdate()
-    if slot.date < today:
-        # messages を使うなら
-        # messages.error(request, "過去の日付は予約できません")
-        return redirect("reservations:index")
-
-    reservation = create_reservation(slot, people, request)
-
-    # thanks画面でキャンセルできるようにID保存(最短実装)
-    request.session["last_reservation_id"] = reservation.id
-    return redirect("reservations:thanks")
-
-
-def thanks(request):
-    reservation_id = request.session.get("last_reservation_id")
-    return render(
-        request, "reservations/thanks.html", {"reservation_id": reservation_id}
-    )
-
-
-@transaction.atomic
-def cansel_reservation(request, reservation_id):
-    if request.method != "POST":
-        return HttpResponseNotAllowed(["POST"])
-
-    reservation = get_object_or_404(
-        Reservation.objects.select_for_update(), id=reservation_id
-    )
-
-    if reservation.status == Reservation.Status.CANCELED:
-        return redirect("reservations:index")
-
-    reservation.status = Reservation.Status.CANCELED
-    reservation.save(update_fields=["status"])
-
-    request.session.pop("last_reservation_id", None)
-
-    return redirect("reservations:index")
-
-
-def slots_partial(request):
-    qdate = parse_date(request.GET.get("date") or "")
-
-    qs = get_slots_with_remaining()
-
-    if qdate:
-        qs = qs.filter(date=qdate)
-
-    return render(
-        request,
-        "reservations/_slots_list.html",
-        {
-            "slots": qs,
-            "qdate": qdate,
-        },
-    )
+from .view_modules.reservation_views import (
+    cancel_reservation,
+    index,
+    reserve,
+    slots_partial,
+    thanks,
+)
