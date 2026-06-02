@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
-from ..models import Reservation
+from ..models import Reservation, Slot
 
 
 @login_required
@@ -42,12 +42,23 @@ def edit_reservation(request, pk):
         return redirect("/")
 
     reservation = get_object_or_404(Reservation, pk=pk)
+    slots = Slot.objects.all().order_by("date", "time")
 
     if request.method == "POST":
         reservation.name = request.POST.get("name")
         reservation.people = request.POST.get("people")
         reservation.phone = request.POST.get("phone")
+        slot_id = request.POST.get("slot")
+        if slot_id:
+            reservation.slot = get_object_or_404(Slot, pk=slot_id)
         reservation.save()
         return redirect("reservations:reservation_list")
 
-    return render(request, "manage/edit_reservation.html", {"reservation": reservation})
+    return render(
+        request,
+        "manage/edit_reservation.html",
+        {
+            "reservation": reservation,
+            "slots": slots,
+        },
+    )
