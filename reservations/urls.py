@@ -21,6 +21,11 @@ urlpatterns = [
     ),
     path("slots/partial/", reservation_views.slots_partial, name="slots_partial"),
     path(
+        "manage/reservations/edit/<int:pk>/",
+        admin_views.edit_reservation,
+        name="edit_reservation",
+    ),
+    path(
         "manage/reservations/delete/<int:pk>/",
         admin_views.delete_reservation,
         name="delete_reservation",
