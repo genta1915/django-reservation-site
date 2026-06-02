@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
 
 from ..models import Reservation, Slot
 
@@ -52,6 +53,7 @@ def edit_reservation(request, pk):
         if slot_id:
             reservation.slot = get_object_or_404(Slot, pk=slot_id)
         reservation.save()
+        messages.success(request, "予約を更新しました")
         return redirect("reservations:reservation_list")
 
     return render(
